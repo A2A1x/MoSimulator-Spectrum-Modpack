@@ -85,6 +85,9 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
 
         [Tooltip("Barge and its score: the wrist turrets so the claw faces the barge (bargePose's twist faces the robot's front)")]
         [SerializeField] private bool bargeTwistTracksBarge = true;
+        [Tooltip("Processor: the elbow holds until the shoulder is within this many degrees of the processor pose, so the " +
+                 "arm doesn't fold down into the floor on the way")]
+        [SerializeField] private float processorShoulderTolerance = 10;
 
         [Tooltip("Score off the back when the back faces the reef (Spectrum's reverse). Off = always score off the front")]
         [SerializeField] private bool allowReverse = true;
@@ -214,6 +217,7 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
         private Vector3 _baseAlignOffset;
         private Quaternion _pincherHomeRot;
         private float _pincherAngle;
+        private bool _shoulderInPlace; // this setpoint's shoulder has reached its target once
         private bool _rightBranch = true; // the branch the twist turns to; has swapBranchSides baked in
 
         protected override void Update()
@@ -307,6 +311,7 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
                 _phaseSetpoint = CurrentSetpoint;
                 _phaseStart = Time.time;
                 _released = false;
+                _shoulderInPlace = false;
                 // The base only updates FacingReef on L2-L4
                 if (CurrentSetpoint == ReefscapeSetpoints.L1) CheckFacingNearestReef();
             }
@@ -527,6 +532,7 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
             // Sequencing, as in Spectrum's ElevatorStates/ShoulderStates/ElbowStates/TwistStates:
             //  prescore (L2-L4): elevator + shoulder go now, elbow waits for the elevator, twist after stageDelay
             //  score (Place after L2-L4): elevator + elbow go now, shoulder after scoreDelay
+            //  processor: shoulder and twist go now, elbow waits for the shoulder (it would fold into the floor)
             //  anything else: everything goes now
             bool prescore = CurrentSetpoint is ReefscapeSetpoints.L2 or ReefscapeSetpoints.L3 or ReefscapeSetpoints.L4;
             bool scoring = CurrentSetpoint == ReefscapeSetpoints.Place &&
@@ -544,6 +550,14 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
                 _elbowTarget = e;
                 _twistTarget = t;
                 if (TimeInPhase >= shoulderScoreDelay) _shoulderTarget = s;
+            }
+            else if (CurrentSetpoint == ReefscapeSetpoints.Processor)
+            {
+                (_shoulderTarget, _twistTarget) = (s, t);
+                // Latched, so a bump once in place doesn't send the elbow back
+                _shoulderInPlace |= Mathf.Abs(Mathf.DeltaAngle(JointAngle(shoulder, JointAxis.X),
+                    ToUnity(s, shoulderHome, invertShoulder))) <= processorShoulderTolerance;
+                if (_shoulderInPlace) _elbowTarget = e;
             }
             else
             {
