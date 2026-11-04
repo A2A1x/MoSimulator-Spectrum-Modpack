@@ -257,6 +257,13 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
             _phaseSetpoint = CurrentSetpoint;
             _phaseStart = Time.time;
             _robotMask = LayerMask.GetMask("Robot");
+            // The wrist collides with the robot again (see FixedUpdate), but only with the chassis: the rest of the arm
+            // was built around never touching it
+            var wristColliders = wrist.GetComponentsInChildren<Collider>();
+            var stage1 = shoulder.GetComponent<ConfigurableJoint>().connectedBody;
+            foreach (var a in stage1.GetComponentsInChildren<Collider>().Except(wristColliders))
+            foreach (var w in wristColliders)
+                Physics.IgnoreCollision(a, w);
 
             _reefFaces = GameObject.FindGameObjectsWithTag("ReefFace")
                 .Select(go => go.GetComponent<AlignNode>())
@@ -300,6 +307,9 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
         {
             UpdateBranchSelection();
             CheckStationMode();
+            // GamePieceController excludes the Robot layer on the rigidbody holding a piece (the wrist) and never clears
+            // it, so the intake went through the bumpers. Held pieces keep their own per-collider exclusion.
+            wrist.GetRigidbody().excludeLayers &= ~_robotMask;
             if (_clearingCoral.Length > 0 && Time.time >= _clearUntil) SetCoralIgnoresRobot(Array.Empty<Collider>());
 
             bool flipPressed = IntakeModeToggleAction.IsPressed() && !_intakeFlipPressed &&
