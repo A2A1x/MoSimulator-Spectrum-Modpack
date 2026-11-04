@@ -46397,8 +46397,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.09, y: 0.1, z: 0.494}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.09, y: 0.06352942, z: 0.31962556}
+  m_Center: {x: 2.6561886e-18, y: -0.018235289, z: 0.00086210674}
 --- !u!1 &2317419202626708099
 GameObject:
   m_ObjectHideFlags: 0
@@ -50616,8 +50616,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.1183659, y: 0.087658465, z: 0.49398854}
-  m_Center: {x: 0.0018522927, y: 0.0048781335, z: -0.00132294}
+  m_Size: {x: 0.1183659, y: 0.087658465, z: 0.32771885}
+  m_Center: {x: 0.0018522927, y: 0.0048781335, z: -0.0013552308}
 --- !u!114 &1704005579095372211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -83761,6 +83761,7 @@ MonoBehaviour:
   bargePose: {x: 21.0789, y: 180, z: -180, w: 179.9}
   climbPose: {x: 0, y: 45, z: 180, w: 179.9}
   bargeTwistTracksBarge: 1
+  processorShoulderTolerance: 10
   allowReverse: 1
   twistLeftBranch: 90
   twistRightBranch: 270
