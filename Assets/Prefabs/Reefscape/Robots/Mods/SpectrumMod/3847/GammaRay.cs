@@ -179,6 +179,10 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
         private RobotGamePieceController<ReefscapeGamePiece, ReefscapeGamePieceData>.GamePieceControllerNode _coralController;
         private RobotGamePieceController<ReefscapeGamePiece, ReefscapeGamePieceData>.GamePieceControllerNode _algaeController;
 
+        /// Which intake is running this tick, for GammaRayLeds
+        public bool IntakingCoral { get; private set; }
+        public bool IntakingAlgae { get; private set; }
+
         private SpectrumPose _pose;
         private bool _reversed;      // scoring off the back: shoulder/elbow negated, twist turned 180 (as in Spectrum's code)
         private bool _branchTwist;   // twist comes from the chosen branch instead of the pose
@@ -420,6 +424,7 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
 
             _coralController.RequestIntake(coralIntake, wantCoral);
             _algaeController.RequestIntake(algaeIntake, wantAlgae);
+            (IntakingCoral, IntakingAlgae) = (wantCoral, wantAlgae);
             KeepPulledPieceOffRobot(wantAlgae ? algaeIntake : coralIntake, wantCoral || wantAlgae);
             _coralController.SetTargetState(coralStowState);
             _algaeController.SetTargetState(algaeStowState);

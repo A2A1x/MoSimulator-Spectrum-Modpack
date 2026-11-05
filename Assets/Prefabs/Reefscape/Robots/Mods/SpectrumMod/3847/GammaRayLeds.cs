@@ -7,8 +7,8 @@ using UnityEngine;
 
 namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
 {
-    /// Spectrum's LedStates.java: every strip shows the same 30-pixel pattern, drawn into a texture each frame.
-    /// Skipped the vision (sees tag) patterns: the sim has no tag tracking.
+    /// Every strip shows the same 30-pixel pattern, drawn into a texture each frame. Patterns are Spectrum's
+    /// (SpectrumLEDs ombre/breathe/rainbow/countdown); which state shows what was picked for the sim.
     public class GammaRayLeds : MonoBehaviour
     {
         [Tooltip("The renderers of the LED strips (the inner 'LED Strip' child of the LED Strip prefab)")]
@@ -23,6 +23,12 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
         [Tooltip("Zones.netAlgaeZone: robot center this far (m) from the barge's center line, +-0.3. 9.618 - field center 8.774")]
         [SerializeField] private float netZoneDistance = 0.844f;
         [SerializeField] private float netZoneTolerance = 0.3f;
+        [Tooltip("Auto-align counts as aligned (green) once its position error is under this many meters")]
+        [SerializeField] private float alignedDistance = 0.05f;
+        [Tooltip("Seconds per breathe cycle")]
+        [SerializeField] private float breathePeriod = 2;
+        [Tooltip("Breathe's faintest brightness (0-1 of full)")]
+        [SerializeField, Range(0, 1)] private float breatheMin = 0.25f;
 
         [Header("Robot Signal Light: solid while disabled, blinking while enabled")]
         [SerializeField] private Renderer rsl;
@@ -34,14 +40,14 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
         [Tooltip("Seconds on, then the same off, while enabled")]
         [SerializeField] private float rslBlinkTime = 0.25f;
 
-        // WPILib colors (SpectrumLEDs.purple, Color.kCoral, ...)
-        private static readonly Color Purple = new Color32(130, 103, 185, 255);
-        private static readonly Color Coral = new Color32(255, 127, 80, 255);
-        private static readonly Color SeaGreen = new Color32(60, 179, 113, 255);
-        private static readonly Color Green = new Color32(0, 128, 0, 255);
-        private static readonly Color HotPink = new Color32(255, 105, 180, 255);
+        private static readonly Color Purple = new Color32(130, 103, 185, 255); // SpectrumLEDs.purple
+        private static readonly Color CoralWhite = new Color32(200, 200, 200, 255);
+        private static readonly Color Aquamarine = new Color32(60, 255, 190, 255);
+        private static readonly Color Orange = new Color32(255, 100, 0, 255);
+        private static readonly Color Green = new Color32(0, 255, 0, 255);
 
         private GammaRay _robot;
+        private ReefscapeAutoAlign _autoAlign;
         private readonly System.Collections.Generic.List<Material> _mats = new();
         private Texture2D _tex;
         private Color[] _px;
@@ -53,6 +59,7 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
         private void Start()
         {
             _robot = GetComponent<GammaRay>();
+            _autoAlign = GetComponent<ReefscapeAutoAlign>();
             _px = new Color[ledsPerStrip];
             _tex = new Texture2D(ledsPerStrip, 1);
             _tex.filterMode = FilterMode.Point;
@@ -94,12 +101,19 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
             if (gm.GameState == GameState.Auto && _lastGameState != GameState.Auto) _autoStart = Time.time;
             _lastGameState = gm.GameState;
 
-            if (gm.RobotState == RobotState.Disabled) Ombre(Purple, Color.white);
+            bool aligning = _robot.AutoAlignLeftAction.IsPressed() || _robot.AutoAlignRightAction.IsPressed();
+            bool atReefLevel = _robot.CurrentSetpoint is ReefscapeSetpoints.L1 or ReefscapeSetpoints.L2 or
+                ReefscapeSetpoints.L3 or ReefscapeSetpoints.L4;
+
+            if (gm.RobotState == RobotState.Disabled) Rainbow();
             else if (gm.GameState == GameState.Auto) Countdown(Time.time - _autoStart, 15);
             // Teleop, highest priority first
-            else if (_robot.CurrentSetpoint == ReefscapeSetpoints.Barge && InNetZone()) Edges(HotPink, 5, Green);  // 8
-            else if (_robot.CurrentRobotMode == ReefscapeRobotMode.Algae) Solid(SeaGreen);                           // 6
-            else Solid(Coral);                                                                                       // 6
+            else if (_robot.CurrentSetpoint == ReefscapeSetpoints.Barge && InNetZone()) Breathe(Green);
+            else if (aligning && atReefLevel && _autoAlign && _autoAlign.getDistance() <= alignedDistance) Breathe(Green);
+            else if (aligning) Breathe(Orange);
+            else if (_robot.IntakingCoral) Breathe(CoralWhite);
+            else if (_robot.IntakingAlgae) Breathe(Aquamarine);
+            else Ombre(Purple, Color.white);
 
             if (reverse) System.Array.Reverse(_px);
             _tex.SetPixels(_px);
@@ -126,16 +140,19 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
             return false;
         }
 
-        private void Solid(Color c)
+        /// SpectrumLEDs.breathe: the whole strip fades between c and a fainter c
+        private void Breathe(Color c)
         {
-            for (int i = 0; i < _px.Length; i++) _px[i] = c;
+            float b = Mathf.Lerp(breatheMin, 1, 0.5f - 0.5f * Mathf.Cos(Time.time * 2 * Mathf.PI / breathePeriod));
+            for (int i = 0; i < _px.Length; i++) _px[i] = new Color(c.r * b, c.g * b, c.b * b);
         }
 
-        /// edges(c, length).overlayOn(solid(base))
-        private void Edges(Color c, int length, Color baseColor)
+        /// SpectrumLEDs.rainbow: one full rainbow along the strip, scrolling at 0.58 strip lengths per second
+        private void Rainbow()
         {
             int n = _px.Length;
-            for (int i = 0; i < n; i++) _px[i] = i < length || i > n - length - 1 ? c : baseColor;
+            float shift = Time.time * 0.58f % 1f;
+            for (int i = 0; i < n; i++) _px[i] = Color.HSVToRGB(((float)i / n + shift) % 1f, 1, 1);
         }
 
         /// SpectrumLEDs.ombre: gradient start->end scrolling at 0.58 strip lengths per second
@@ -146,14 +163,14 @@ namespace Prefabs.Reefscape.Robots.Mods.SpectrumMod._3847
             for (int i = 0; i < n; i++) _px[i] = Color.Lerp(start, end, (i + n * shift) / n % 1f);
         }
 
-        /// SpectrumLEDs.countdown: yellow fading to red, turning off from the end of the strip
+        /// SpectrumLEDs.countdown over a rainbow: LEDs turn off one by one from the end of the strip
         private void Countdown(float elapsed, float duration)
         {
+            Rainbow();
             int n = _px.Length;
             float progress = elapsed / duration;
             int off = (int)(n * progress);
-            var c = new Color(1, Mathf.Clamp01(1 - progress), 0);
-            for (int i = 0; i < n; i++) _px[i] = progress >= 1 || n - i <= off ? Color.black : c;
+            for (int i = 0; i < n; i++) if (progress >= 1 || n - i <= off) _px[i] = Color.black;
         }
     }
 }
