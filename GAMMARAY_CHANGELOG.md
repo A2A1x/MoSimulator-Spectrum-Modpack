@@ -1,5 +1,23 @@
 # GammaRay (3847) Changelog
 
+## v2.0.0
+
+### Intake
+- Intake no longer phases through the bumpers when driven into a wall. Once the robot picked up its first game piece (including the preload), the intake stopped colliding with the rest of the robot, so a wall could push it straight into the chassis. It now stops against the bumpers and frame, and the robot stops with it
+- Ground coral intake zone trimmed to the width of the cradle (about 12.6 in deep, was 19.4 in). Coral sitting off the edge of the intake is no longer grabbed and then knocked away; line coral up with the cradle to pick it up
+
+### Arm
+- Arm no longer wobbles, including side to side, which the real arm can't do. The elevator carriage and arm sections now have realistic weights (4, 3, 2 and 3 kg, up from 1 kg each), so the arm holds steady on its joints instead of swaying against the much heavier chassis
+
+### LEDs
+- Idle (enabled, nothing else going on): purple wave, the pattern that used to show while disabled
+- Disabled: scrolling rainbow
+- Auto: the countdown is now a rainbow, still turning off one LED at a time over the 15 s
+- Intaking coral: white breathe. Intaking algae: aquamarine breathe. Only while the intake is actually running, so holding intake with a piece already in the robot shows idle
+- Auto-aligning to the reef: orange breathe while either auto-align button is held
+- Ready to score: green breathe once auto-align has the robot within 5 cm of its spot at L1-L4, or with Barge selected and the robot in range of the barge
+- Breathing fades to a fainter version of the color instead of going dark
+
 ## v1.1.0 (2026-10-11)
 
 ### Intake
