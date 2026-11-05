@@ -38787,6 +38787,7 @@ GameObject:
   - component: {fileID: 1488353577992449314}
   - component: {fileID: 4406604679622320074}
   - component: {fileID: 7537672316397710050}
+  - component: {fileID: 6831942011918490705}
   m_Layer: 6
   m_Name: 4-20-Algae Pivot Claw Plate.001
   m_TagString: Untagged
@@ -38861,6 +38862,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6831942011918490705
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1955030779013850710}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.00028188183, y: 0.000057817615, z: 0.0021948682}
+  m_Center: {x: -0.0007640918, y: 0.00023210904, z: 0.00072236493}
 --- !u!1 &1955848854456159073
 GameObject:
   m_ObjectHideFlags: 0
@@ -57539,6 +57561,7 @@ GameObject:
   - component: {fileID: 6760903972411321050}
   - component: {fileID: 6868820071830366083}
   - component: {fileID: 5114040186829539629}
+  - component: {fileID: 8673665577724998323}
   m_Layer: 6
   m_Name: 4-34-Algae Claw Standoff Spacer
   m_TagString: Untagged
@@ -57613,6 +57636,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &8673665577724998323
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2802972642655602020}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.00009780744
+  m_Height: 0.0004064002
+  m_Direction: 1
+  m_Center: {x: -0.001748402, y: 0.00000007600984, z: 0.0014179044}
 --- !u!1 &2813556808384653973
 GameObject:
   m_ObjectHideFlags: 0
@@ -85380,6 +85426,7 @@ GameObject:
   - component: {fileID: 3770841340292424680}
   - component: {fileID: 1238009088927586309}
   - component: {fileID: 2871046824555020009}
+  - component: {fileID: 1055734054320374410}
   m_Layer: 6
   m_Name: 4-36-Algae Claw Outer Standoff.001
   m_TagString: Untagged
@@ -85454,6 +85501,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &1055734054320374410
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4177560951421759702}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.00009669666
+  m_Height: 0.0003810001
+  m_Direction: 1
+  m_Center: {x: -0.0017496475, y: -0.00044442408, z: 0.0014145032}
 --- !u!1 &4177989560367936766
 GameObject:
   m_ObjectHideFlags: 0
@@ -142612,6 +142682,7 @@ GameObject:
   - component: {fileID: 411502168102151691}
   - component: {fileID: 2332923875816695953}
   - component: {fileID: 1328813093029030240}
+  - component: {fileID: 6564550578268633885}
   m_Layer: 6
   m_Name: 4-20-Algae Pivot Claw Plate
   m_TagString: Untagged
@@ -142686,6 +142757,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6564550578268633885
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6854176515449218835}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.00027734588, y: 0.000050800623, z: 0.0021948682}
+  m_Center: {x: -0.00076636154, y: 0.00022860021, z: 0.00072236493}
 --- !u!1 &6856029345654583372
 GameObject:
   m_ObjectHideFlags: 0
@@ -179011,6 +179103,7 @@ GameObject:
   - component: {fileID: 8408942046118919158}
   - component: {fileID: 7245334187557975231}
   - component: {fileID: 5607159023753900797}
+  - component: {fileID: 2417016745414788515}
   m_Layer: 6
   m_Name: 4-36-Algae Claw Outer Standoff
   m_TagString: Untagged
@@ -179085,6 +179178,29 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &2417016745414788515
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8617127557862908685}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.00009669666
+  m_Height: 0.0003810001
+  m_Direction: 1
+  m_Center: {x: -0.0017496475, y: -0.0004444239, z: 0.0014145032}
 --- !u!1 &8618033164109943524
 GameObject:
   m_ObjectHideFlags: 0
