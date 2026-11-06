@@ -1,6 +1,6 @@
 # GammaRay (3847) Changelog
 
-## v2.0.0
+## v2.0.0 (2026-11-05)
 
 ### Intake
 - Intake no longer phases through the bumpers when driven into a wall. Once the robot picked up its first game piece (including the preload), the intake stopped colliding with the rest of the robot, so a wall could push it straight into the chassis. It now stops against the bumpers and frame, and the robot stops with it
