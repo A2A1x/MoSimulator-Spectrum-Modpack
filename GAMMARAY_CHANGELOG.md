@@ -7,7 +7,11 @@
 - Ground coral intake zone trimmed to the width of the cradle (about 12.6 in deep, was 19.4 in). Coral sitting off the edge of the intake is no longer grabbed and then knocked away; line coral up with the cradle to pick it up
 
 ### Arm
-- Arm no longer wobbles, including side to side, which the real arm can't do. The elevator carriage and arm sections now have realistic weights (4, 3, 2 and 3 kg, up from 1 kg each), so the arm holds steady on its joints instead of swaying against the much heavier chassis
+- Arm no longer wobbles, including side to side, which the real arm can't do. The elevator carriage, shoulder and elbow sections now have realistic weights (4, 3 and 2 kg, up from 1 kg each), so the arm holds steady on its joints instead of swaying against the much heavier chassis
+- The wrist stays light (1 kg), so the end of the arm doesn't rock the robot when it swings between setpoints
+
+### Algae
+- Algae claw plates and standoffs have collision, so algae and field elements hit the claw instead of passing through it
 
 ### LEDs
 - Idle (enabled, nothing else going on): purple wave, the pattern that used to show while disabled
